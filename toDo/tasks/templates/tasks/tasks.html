@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} To do {% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4">
+	<div class="flex flex-col items-center gap-3">
+		<h1 class="text-4xl">Lista de Tarefas</h1>
+		<input type="text" placeholder="Buscar tarefa">
+
+		<a href="newtask/">
+			<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Adicionar tarefa</button>
+		</a>
+	</div>
+	
+	<!-- django messages -->
+	{% if messages %}
+		<ul>
+			{% for message in messages %}
+				<li>
+					{% if message.tags %} 
+						<div class="bg-green-100 rounded-lg py-5 px-6 mb-4 text-base text-green-700" role="alert">
+							{{message}}
+					  	</div>	
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<div>
+		<ul class="bg-slate-100 shadow-lg p-6 rounded-md">
+			{% for task in tasks %}
+			<li class="bg-white border shadow-md p-4 flex justify-between items-center rounded-md">
+				<a href="/task/{{task.id}}">{{task.title}}</a>
+				<div>
+					<a href="edit/{{task.id}}">
+						<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Editar</button>
+					</a>
+					<a href="delete/{{task.id}}">
+						<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Remover</button>
+					</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock %}
