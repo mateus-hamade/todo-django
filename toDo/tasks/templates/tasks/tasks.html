@@ -1,16 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %} To do {% endblock %}
+{% block title %} To do{% endblock %}
 
 {% block content %}
 <div class="flex flex-col gap-4">
-	<div class="flex flex-col items-center gap-3">
-		<h1 class="text-4xl">Lista de Tarefas</h1>
-		<input type="text" placeholder="Buscar tarefa">
-
-		<a href="newtask/">
-			<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Adicionar tarefa</button>
-		</a>
+	<div class="flex flex-col gap-4">
+		<h1 class="text-3xl text-slate-900">Lista de Tarefas</h1>
+		<div class="flex items-center gap-3">
+			<div class="bg-blue-500 flex flex-col items-center rounded p-4">
+				<h1 class="text-1xl">Proporção entre as tarefas</h1>
+				<span>{{proportion}}</span>
+			</div>
+			<div class="bg-green-500 flex flex-col items-center rounded p-4">
+				<h1 class="text-1xl">Tarefas terminadas</h1>
+				<span>{{tasksDone}}</span>
+			</div>
+			<div class="bg-red-500 flex flex-col items-center rounded p-4">
+				<h1 class="text-1xl">Tarefas incompletas</h1>
+				<span>{{tasksDoing}}</span>
+			</div>
+		</div>
+		<div class="flex flex-col gap-3">
+			<form method="GET">
+				<input type="text" placeholder="Buscar tarefa" name="search" class="inline-block py-2.5 font-medium text-xs leading-tight rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+				<button type="submit" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Buscar</button>				
+			</form>
+			<div>
+				<a href="newtask/">
+					<button type="submit" class="px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Adicionar Tarefa</button>
+				</a>
+			</div>
+		</div>
 	</div>
 	
 	<!-- django messages -->
@@ -30,19 +50,49 @@
 	<div>
 		<ul class="bg-slate-100 shadow-lg p-6 rounded-md">
 			{% for task in tasks %}
-			<li class="bg-white border shadow-md p-4 flex justify-between items-center rounded-md">
-				<a href="/task/{{task.id}}">{{task.title}}</a>
-				<div>
-					<a href="edit/{{task.id}}">
-						<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Editar</button>
-					</a>
-					<a href="delete/{{task.id}}">
-						<button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Remover</button>
-					</a>
-				</div>
-			</li>
+				{% if task.completed == False %}	
+					<li class="bg-red-50 border shadow-md p-4 flex justify-between items-center rounded-md">
+				{% else %}
+					<li class="bg-green-50 border shadow-md p-4 flex justify-between items-center rounded-md">
+				{% endif %}
+					<a href="/task/{{task.id}}">{{task.title}}</a>
+					<div class="flex gap-4">				
+						<a href="changestatus/{{task.id}}">
+							{% if task.completed == False %}	
+								<i class="fas fa-check-circle text-red-500"></i>
+							{% else %}
+								<i class="fas fa-check-circle text-green-500"></i>
+							{% endif %}	
+						</a>
+						<a href="edit/{{task.id}}">
+							<i class="fa-solid fa-pen"></i>
+						</a>
+						<a href="delete/{{task.id}}">
+							<i class="fa-solid fa-trash"></i>
+						</a>
+					</div>
+				</li>
 			{% endfor %}
 		</ul>
+	</div>
+	<div class="flex flex-col items-center mb-4">
+		<span> 
+			{% if tasks.has_previous %}
+				<a href="?page={{tasks.previous_page_number}}">
+					<i class="fa-solid fa-arrow-left"></i>
+				</a>
+			{% endif %}
+			
+			{% if tasks.number %}
+				{{tasks.number}} de {{tasks.paginator.num_pages}}
+			{% endif %}
+
+			{% if tasks.has_next %}
+				<a href="?page={{tasks.next_page_number}}">
+					<i class="fa-solid fa-arrow-right"></i>
+				</a>
+			{% endif %}
+		</span>
 	</div>
 </div>
 {% endblock %}

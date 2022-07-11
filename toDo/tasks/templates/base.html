@@ -5,18 +5,29 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="https://emojipedia-us.s3.amazonaws.com/source/skype/289/check-mark-button_2705.png" type="image/x-icon">
+	<script src="https://kit.fontawesome.com/d3792949ac.js" crossorigin="anonymous"></script>
 	{% tailwind_css %} <!-- tailwind.css -->
-	<title>Document</title>
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
 </head>
-<body class="container m-auto">
+<body class="container m-auto font-mono text-base leading-relaxed">
 	<header class="shadow-lg py-4 bg-white flex items-center w-full justify-around fixed top-0 right-0 left-0"">
 		<div class="flex gap-3 items-center">
-			<h1><a href="/">✅ To do</a></h1>
+			<h1>✅ To Do</h1>
 		</div>
 		<div class="flex gap-4">
-			<a href="/"><p>Home</p></a>
-			<a href=""><p>Tarefas</p></a>
-			<a href=""><p>Sobre</p></a>
+			{% if user.is_authenticated %} <!-- if user is authenticated -->
+				<a href="/"><p>Tarefas</p></a>
+			{% else %}
+				<a href="/accounts/login"><p>Entrar</p></a> <!-- if user is not authenticated -->
+			{% endif %}
+
+			{% if user.is_authenticated %} <!-- if user is authenticated -->
+				<a href="/accounts/logout"><p>Sair</p></a>
+			{% endif %}
 		</div>
 	</header>
 	<main class="mt-20">
