@@ -8,7 +8,10 @@
 >> python -m venv venv
 
 >> venv/scripts/activate
+```
 
+- Instalando as Bibliotecas 📚
+```
 >> pip install django
 >> pip install django-tailwind
 ```
@@ -19,9 +22,5 @@
 
 >> python manage.py tailwind start
 ```
-### Bibliotecas 📚
-- Django ✅
-- Django-Tailwind ✅
-
 ### Curso 🔗
 - Matheus Battisti - Hora de Codar → https://www.youtube.com/playlist?list=PLnDvRpP8BnewqnMzRnBT5LeTpld5bMvsj
