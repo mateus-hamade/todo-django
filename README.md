@@ -6,7 +6,6 @@
 - Criando o ambiente virtual ⚙️
 ```
 >> python -m venv venv
-
 >> venv/scripts/activate
 ```
 
@@ -19,8 +18,9 @@
 - Executando o código 🚀
 ```
 >> python manage.py runserver
-
+>> python manage.py tailwind install
 >> python manage.py tailwind start
+
 ```
 ### Curso 🔗
 - Matheus Battisti - Hora de Codar → https://www.youtube.com/playlist?list=PLnDvRpP8BnewqnMzRnBT5LeTpld5bMvsj
